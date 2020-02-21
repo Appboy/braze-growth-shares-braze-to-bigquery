@@ -87,7 +87,7 @@ env_variables:
 ```
 
 ### cron.yaml
-A [cron job](https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml) can be tasked to trigger the Braze API Export using the internal `/schedule` endpoint. See [cron.yml](/cron.yaml) for example.
+A [cron job](https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml) can be tasked to trigger the Braze API Export using the internal `/schedule` endpoint. See [cron.yaml](/cron.yaml) for example.
 ```
 cron:
 - description: "schedule hourly processing of Braze exports"
