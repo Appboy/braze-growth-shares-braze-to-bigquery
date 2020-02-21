@@ -19,3 +19,4 @@ env_variables:
   s3secretkey: [AWS Secret Key]
   s3bucketname: [AWS Bucket Name]
   s3path: [AWS Bucket Prefix, optional]
+  s3processedprefix: processed

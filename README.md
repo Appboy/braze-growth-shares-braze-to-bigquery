@@ -9,7 +9,7 @@ The following permission and Google Services are required:
 * [Google Cloud Storage](https://console.cloud.google.com/storage/)
 * [Google App Engine](https://console.cloud.google.com/appengine)
 * Braze API Key with [users.export.segment](https://www.braze.com/docs/api/endpoints/export/user_data/post_users_segment/) permissions
-* Access to [Amazon AWS S3](https://console.aws.amazon.com/console/) (Required only if S3 Exports are setup)
+* Access to [Amazon AWS S3](https://console.aws.amazon.com/console/) with write and delete permissions (Required only if S3 Exports is setup)
 
 **Note: Ensure BigQuery and Cloud Storage are running from the same geo-location to avoid issues**
 
@@ -17,7 +17,7 @@ The following permission and Google Services are required:
 The following is an outline of the process:
 * An API call to the [Braze User by Segment](https://www.braze.com/docs/api/endpoints/export/user_data/post_users_segment/) endpoint using a predefined [segment](https://www.braze.com/docs/user_guide/engagement_tools/segments/creating_a_segment/) with a callback to the app.
 * Waits for Braze to trigger the callback.
-	* If S3 for exports is enabled, reads from S3 (**TO BE IMPLEMENTED**).
+	* If S3 for exports is enabled, reads from S3, then moves files to a processed directory.
 	* Otherwise, pulls info from a zip S3 url.
 * Converts files to a csv, and uploads to Google Cloud Storage.
 * Create temporary BigQuery table off the csv file.
@@ -60,6 +60,7 @@ env_variables:
 	s3secretkey: [AWS Secret Key]
 	s3bucketname: [AWS Bucket Name]
 	s3path: [AWS Bucket Prefix, optional]
+	s3processedprefix: [AWS Bucket Prefix for processed files]
 ```
 
 #### app.yaml example
@@ -84,6 +85,7 @@ env_variables:
 	s3secretkey: aws-secret-key
 	s3bucketname: bucket-name
 	s3path: brazeexports
+	s3processedprefix: processed
 ```
 
 ### cron.yaml

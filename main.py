@@ -125,20 +125,23 @@ def processURLGCS(url):
 
 
 # Method to process s3 bucket, and save to cloud storage
-def processS3GCS(object_prefix):
+# All files within the data directory will be process then moved to a done folder.
+def processS3GCS():
     # Connect to S3
     s3client = boto3.resource('s3',
         aws_access_key_id=os.environ['s3accessid'].strip(),
         aws_secret_access_key=os.environ['s3secretkey'].strip()
         )
-    s3bucket = s3client.Bucket(os.environ['s3bucketname'].strip())
+    s3bucketname = os.environ['s3bucketname'].strip()
+    s3bucket = s3client.Bucket(s3bucketname)
     s3prefix = ''
     if (os.environ['s3path'].strip()):
         s3prefix = os.environ['s3path'].rstrip('/') + '/'
     segment_id = ''
-    dateprefix = datetime.utcnow().strftime('%Y-%m-%d') + '/'
+    dateprefix = datetime.utcnow().strftime('%Y-%m-%d')
     segmentprefix = os.environ['brazesegmentid'].strip()
-    s3prefix += "segment-export/{}/{}{}/".format(segmentprefix, dateprefix, object_prefix)
+    s3prefix += "segment-export/{}/{}/".format(segmentprefix, dateprefix)
+    s3doneprefix = os.environ['s3processedprefix'].strip()
     s3objs = s3bucket.objects.filter(Prefix=s3prefix)
 
     # Generate header an output string variable
@@ -149,7 +152,6 @@ def processS3GCS(object_prefix):
 
     for s3obj in s3objs:
         if '.zip' in s3obj.key:
-            print(s3obj.key)
             buffer = io.BytesIO(s3obj.get()["Body"].read())
             with zipfile.ZipFile(buffer) as exports:
                 for brazefiles in exports.infolist():
@@ -173,6 +175,9 @@ def processS3GCS(object_prefix):
                                     logging.warning("Parse error in {} line {}: {}\n\tError: {}"
                                         .format(brazefiles.filename, linecount, line_utf8, e))
                                     continue
+            # Move completed file to process folder
+            s3client.Object(s3bucketname,s3obj.key.replace('segment-export',s3doneprefix)).copy_from(CopySource=s3bucketname + '/' + s3obj.key)
+            s3client.Object(s3bucketname,s3obj.key).delete()
 
     # Create Google Cloud Storage Bucket file to save file to save to
     storage_client = storage.Client()
@@ -280,17 +285,18 @@ def processBrazeCallBack():
             abort(400)
         # s3enabled = os.environ['s3enabled']
         if payload['success']:
+            if ('s3enabled' in os.environ) and (os.environ['s3enabled']):
+                gscfile = processS3GCS()
             # Only URL without S3 works
-            if 'url' in payload:
+            elif 'url' in payload:
                 gscfile = processURLGCS(payload['url'])
-
-                # Create temporary table from Google Cloud Storage
-                gcstemptable = createTempTable(gscfile.strip())
-                # Merge Table
-                mergeTables(gcstemptable)
             else:
                 logging.error("Segment Export Failure missing response: {}".format(json.dumps(payload)))
                 abort(400)
+            # Create temporary table from Google Cloud Storage
+            gcstemptable = createTempTable(gscfile.strip())
+            # Merge Table
+            mergeTables(gcstemptable)
             resp = Response('{"message": "ok"}', status=200, mimetype='application/json')
             return resp
         else:
