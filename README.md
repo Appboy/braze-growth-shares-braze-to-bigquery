@@ -30,7 +30,7 @@ To deploy to your [Google Cloud Project](https://cloud.google.com/sdk/gcloud/ref
 
 [![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run)
 
-Create an `app.yaml`, see [app_example.yaml](/app_example.yaml) and deploy to your project using
+Create an `app.yaml`, see [app_example.yaml](/app_example.yaml) and deploy to your project using [gcloud cli](https://cloud.google.com/sdk/gcloud).
 ```
 gcloud app deploy
 ```
@@ -40,48 +40,48 @@ To set the environment variables for the script to run with, make an `app.yaml` 
 
 ```
 env_variables:
-    gcsproject: [Google Project Name]
-    bigquery_dataset: [BigQuery DataSet]
-    bigquery_table: [BigQuery Destination Table]
-    bigquery_temptable_duration: [BigQuery TempTable Expiration (Seconds)]
-    brazerestendpoint: [Braze API REST Endpoint ie https://rest.braze.com/]
-    brazeapikey: [Braze API Key with User Segment Export Permissions]
-    brazesegmentid: [Braze Segment ID]
-    brazesegmentendpoint: [Braze API Endpoint ie /users/export/segment]
-    brazesegmentfields: [Braze export fields ie external_id,random_bucket,first_name]
-    brazesegmenttype: [Braze export field type ie STRING,INTEGER,STRING]
-    gcsprimarykey: [BigQuery primary key external_id]
-    gcsplatformprefix: [Google Appengine URL (Optional) ie .appspot.com]
-    gcspath: [Google Cloud Store path ie brazeexport]
-		s3enabled: [Boolean if AWS S3 is used]
-		s3accessid: [AWS Access ID]
-		s3secretkey: [AWS Secret Key]
-		s3bucketname: [AWS Bucket Name]
-		s3path: [AWS Bucket Prefix, optional]
+	gcsproject: [Google Project Name]
+	bigquery_dataset: [BigQuery DataSet]
+	bigquery_table: [BigQuery Destination Table]
+	bigquery_temptable_duration: [BigQuery TempTable Expiration (Seconds)]
+	brazerestendpoint: [Braze API REST Endpoint ie https://rest.braze.com/]
+	brazeapikey: [Braze API Key with User Segment Export Permissions]
+	brazesegmentid: [Braze Segment ID]
+	brazesegmentendpoint: [Braze API Endpoint ie /users/export/segment]
+	brazesegmentfields: [Braze export fields ie external_id,random_bucket,first_name]
+	brazesegmenttype: [Braze export field type ie STRING,INTEGER,STRING]
+	gcsprimarykey: [BigQuery primary key external_id]
+	gcsplatformprefix: [Google Appengine URL (Optional) ie .appspot.com]
+	gcspath: [Google Cloud Store path ie brazeexport]
+	s3enabled: [Boolean if AWS S3 is used]
+	s3accessid: [AWS Access ID]
+	s3secretkey: [AWS Secret Key]
+	s3bucketname: [AWS Bucket Name]
+	s3path: [AWS Bucket Prefix, optional]
 ```
 
 #### app.yaml example
 Example:
 ```
 env_variables:
-    gcsproject: BrazeBigQuery
-    bigquery_dataset: bgdataset
-    bigquery_table: mastertable
-    bigquery_temptable_duration: 86400
-    brazerestendpoint: https://rest.iad-01.braze.com/
-    brazeapikey: api-key-with-user-export-segment-permission
-    brazesegmentid: segmentidfromsegmentcreation
-    brazesegmentendpoint: /users/export/segment
-    brazesegmentfields: external_id,random_bucket,first_name
-    brazesegmenttype: STRING,INTEGER,STRING
-    gcsprimarykey: external_id
-    gcsplatformprefix: .appspot.com
-    gcspath: brazeexport
-		s3enabled: true
-    s3accessid: aws-access-id
-    s3secretkey: aws-secret-key
-    s3bucketname: bucket-name
-    s3path: brazeexports
+	gcsproject: BrazeBigQuery
+	bigquery_dataset: bgdataset
+	bigquery_table: mastertable
+	bigquery_temptable_duration: 86400
+	brazerestendpoint: https://rest.iad-01.braze.com/
+	brazeapikey: api-key-with-user-export-segment-permission
+	brazesegmentid: segmentidfromsegmentcreation
+	brazesegmentendpoint: /users/export/segment
+	brazesegmentfields: external_id,random_bucket,first_name
+	brazesegmenttype: STRING,INTEGER,STRING
+	gcsprimarykey: external_id
+	gcsplatformprefix: .appspot.com
+	gcspath: brazeexport
+	s3enabled: true
+	s3accessid: aws-access-id
+	s3secretkey: aws-secret-key
+	s3bucketname: bucket-name
+	s3path: brazeexports
 ```
 
 ### cron.yaml
