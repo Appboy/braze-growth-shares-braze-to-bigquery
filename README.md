@@ -12,6 +12,7 @@ The following permission and Google Services are required:
 * Access to [Amazon AWS S3](https://console.aws.amazon.com/console/) with write and delete permissions (Required only if S3 Exports is setup)
 
 **Note: Ensure BigQuery and Cloud Storage are running from the same geo-location to avoid issues**
+**Important: Files are uncompressed and process in memory, so this process is design to update incremental exports. Check your process to ensure there's no memory issues due to the size of the segment export.**
 
 ## Process Steps
 The following is an outline of the process:
