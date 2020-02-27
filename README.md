@@ -4,7 +4,7 @@ This is an Google Cloud AppEngine python 3 script which automates the process of
 _Only standard attributes and data types(String, Number) has been tested_
 
 The following permission and Google Services are required:
-* [Google BigQuery](https://console.cloud.google.com/bigquery)
+* [Google BigQuery](https://console.cloud.google.com/bigquery) with master table already created
 * [Google API & Services](https://console.cloud.google.com/apis/dashboard) enabled
 * [Google Cloud Storage](https://console.cloud.google.com/storage/)
 * [Google App Engine](https://console.cloud.google.com/appengine)
@@ -44,7 +44,7 @@ To set the environment variables for the script to run with, make an `app.yaml` 
 env_variables:
 	gcsproject: [Google Project Name]
 	bigquery_dataset: [BigQuery DataSet]
-	bigquery_table: [BigQuery Destination Table]
+	bigquery_table: [BigQuery Destination Table - this should already exist]
 	bigquery_temptable_duration: [BigQuery TempTable Expiration (Seconds)]
 	brazerestendpoint: [Braze API REST Endpoint ie https://rest.braze.com/]
 	brazeapikey: [Braze API Key with User Segment Export Permissions]

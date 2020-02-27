@@ -75,7 +75,10 @@ def processURLGCS(url):
     # Create Google Cloud Storage Bucket file to save file to save to
     storage_client = storage.Client()
     gcsbucketname = os.environ['gcsproject'].lower().strip()
-    gcsbucketname += '.appspot.com'
+    if os.environ['gcsplatformprefix'] is None:
+        gcsbucketname += '.appspot.com'
+    else:
+        gcsbucketname += os.environ['gcsplatformprefix'].strip().lower()
 
     gcsbucket = storage_client.get_bucket(gcsbucketname)
     gcsfilename = ''
@@ -285,9 +288,8 @@ def processBrazeCallBack():
             abort(400)
         # s3enabled = os.environ['s3enabled']
         if payload['success']:
-            if ('s3enabled' in os.environ) and (os.environ['s3enabled']):
+            if ('s3enabled' in os.environ) and (str(os.environ['s3enabled']).strip().lower() in ['true', '1', 't', 'y', 'yes']):
                 gscfile = processS3GCS()
-            # Only URL without S3 works
             elif 'url' in payload:
                 gscfile = processURLGCS(payload['url'])
             else:
