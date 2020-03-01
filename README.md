@@ -70,7 +70,7 @@ env_variables:
 ```
 
 * Set `gcsmaxlines` to an appropriate limit.
-* `gcsusetask` for large exports, Google Cloud Tasks is recommended. [See below](#cloud_tasks_deploy)
+* `gcsusetask` for large exports, Google Cloud Tasks is recommended. [See below](#cloud-tasks)
 
 #### app.yaml example
 Example:
