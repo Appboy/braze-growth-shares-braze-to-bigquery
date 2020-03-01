@@ -137,7 +137,7 @@ def processURLGCS(url):
                                     .format(gcsfilename, e))
                             # start a new batch
                             gcscsv.seek(0)
-                            gcscsv.truncate(0)
+                            gcscsv.truncate()
                             gcsbasefilenames.append(gcsbasefilename)
                             filecount += 1
                             csvwriter = csv.writer(gcscsv, delimiter=',')
@@ -247,7 +247,7 @@ def processS3GCS():
                                             .format(gcsfilename, e))
                                     # start a new batch
                                     gcscsv.seek(0)
-                                    gcscsv.truncate(0)
+                                    gcscsv.truncate()
                                     gcsbasefilenames.append(gcsbasefilename)
                                     filecount += 1
 
@@ -255,7 +255,7 @@ def processS3GCS():
                                     gcscsv.write(','.join(brazefields) + "\n")
                                     maxlinecount = 0
             buffer.seek(0)
-            buffer.truncate(0)
+            buffer.truncate()
             # Move completed file to process folder
             s3client.Object(s3bucketname,s3obj.key.replace('segment-export',s3doneprefix)).copy_from(CopySource=s3bucketname + '/' + s3obj.key)
             s3client.Object(s3bucketname,s3obj.key).delete()
