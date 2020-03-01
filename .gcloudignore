@@ -32,3 +32,4 @@ __pycache__
 bz_logs/*
 .env
 *creds.json
+static/*

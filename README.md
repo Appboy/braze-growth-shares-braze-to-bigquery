@@ -10,9 +10,10 @@ The following permission and Google Services are required:
 * [Google App Engine](https://console.cloud.google.com/appengine)
 * Braze API Key with [users.export.segment](https://www.braze.com/docs/api/endpoints/export/user_data/post_users_segment/) permissions
 * Access to [Amazon AWS S3](https://console.aws.amazon.com/console/) with write and delete permissions (Required only if S3 Exports is setup)
+* [Google Cloud Task](https://console.cloud.google.com/cloudtasks) - Optional, use if segment exports is expected to be big or for performance reasons.
 
 **Note: Ensure BigQuery and Cloud Storage are running from the same geo-location to avoid issues**
-**Important: Files are uncompressed and process in memory, so this process is design to update incremental exports. Check your process to ensure there's no memory issues due to the size of the segment export.**
+**Important: Files are uncompressed and process in memory, so this process is design to update incremental exports. Check your process to ensure there's no memory issues due to the size of the segment export. For large export, S3 and enabling Cloud Task is recommended.**
 
 ## Process Steps
 The following is an outline of the process:
@@ -56,13 +57,20 @@ env_variables:
 	gcsprimarykey: [BigQuery primary key external_id]
 	gcsplatformprefix: [Google Appengine URL (Optional) ie .appspot.com]
 	gcspath: [Google Cloud Store path ie brazeexport]
+	gcsmaxlines: [Batch Record rows per table. Adjust to avoid memory limits - ie 100000]
 	s3enabled: [Boolean if AWS S3 is used]
 	s3accessid: [AWS Access ID]
 	s3secretkey: [AWS Secret Key]
 	s3bucketname: [AWS Bucket Name]
 	s3path: [AWS Bucket Prefix, optional]
 	s3processedprefix: [AWS Bucket Prefix for processed files]
+	gcslocation: [Google App Engine location used for Cloud Tasks]
+	gcsusetask: [Boolean if Cloud Tasks should be used]
+	gcstaskqueue: [Cloud Tasks Queue Name]
 ```
+
+* Set `gcsmaxlines` to an appropriate limit.
+* `gcsusetask` for large exports, Google Cloud Tasks is recommended. [See below](#cloud_tasks_deploy)
 
 #### app.yaml example
 Example:
@@ -81,12 +89,16 @@ env_variables:
 	gcsprimarykey: external_id
 	gcsplatformprefix: .appspot.com
 	gcspath: brazeexport
+	gcsmaxlines: 100000
 	s3enabled: true
 	s3accessid: aws-access-id
 	s3secretkey: aws-secret-key
 	s3bucketname: bucket-name
 	s3path: brazeexports
 	s3processedprefix: processed
+	gcsusetask: true
+	gcslocation: northamerica-northeast1
+	gcstaskqueue: braze
 ```
 
 ### cron.yaml
@@ -109,4 +121,15 @@ gcloud app deploy cron.yaml
 ```
 
 Any updates to the `cron.yaml` will require the `cron.yaml` file to be redeployed.
+
+### Cloud Tasks
+For large segment exports, it's recommended to use Google Cloud Tasks to queue the job processing in the background.
+
+* Enable [Google Cloud Tasks API](https://console.cloud.google.com/marketplace/details/google/cloudtasks.googleapis.com)
+* Created an Tasks queue via gcloud:
+	* `gcloud tasks queues create [TasksQueueName] --max-concurrent-dispatches 10 --max-attempts 1`
+* Enable `gcsusetask`
+* Set `gcstaskqueue` to `[TasksQueueName]`
+* set `gcslocation` [Google App Engine Location](https://cloud.google.com/appengine/docs/locations)
+
 

@@ -13,10 +13,12 @@ env_variables:
   gcsprimarykey: [BigQuery primary key external_id]
   gcsplatformprefix: [Google Appengine URL, optional ie .appspot.com]
   gcspath: [Google Cloud Store path ie brazeexport]
-  gcslocation: northamerica-northeast1
   s3enabled: [Boolean if AWS S3 is used]
   s3accessid: [AWS Access ID]
   s3secretkey: [AWS Secret Key]
   s3bucketname: [AWS Bucket Name]
   s3path: [AWS Bucket Prefix, optional]
   s3processedprefix: processed
+  gcslocation: [Google App Engine location used for Cloud Tasks]
+  gcsusetask: [Boolean if Cloud Tasks should be used]
+  gcstaskqueue: [Cloud Tasks Queue Name]
