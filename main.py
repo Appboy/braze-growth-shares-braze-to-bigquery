@@ -87,7 +87,12 @@ def processURLGCS(url):
 
     maxlinecount = 0
     filecount = 1
-    gcsmaxlines = int(os.environ['gcsmaxlines'].strip())
+    if os.environ['gcsmaxlines'] is None:
+        gcsmaxlines = 200000
+    else:
+        gcsmaxlines = int(os.environ['gcsmaxlines'].strip())
+    if gcsmaxlines < 200000:
+        gcsmaxlines = 200000
     gcsfilename = ''
 
     gcspath = ''
@@ -190,7 +195,12 @@ def processS3GCS():
     gcsbasefilenames = []
     maxlinecount = 0
     filecount = 1
-    gcsmaxlines = int(os.environ['gcsmaxlines'].strip())
+    if os.environ['gcsmaxlines'] is None:
+        gcsmaxlines = 200000
+    else:
+        gcsmaxlines = int(os.environ['gcsmaxlines'].strip())
+    if gcsmaxlines < 200000:
+        gcsmaxlines = 200000
     gcsfilename = ''
 
     gcspath = ''
@@ -254,8 +264,7 @@ def processS3GCS():
                                     csvwriter = csv.writer(gcscsv, delimiter=',')
                                     gcscsv.write(','.join(brazefields) + "\n")
                                     maxlinecount = 0
-            buffer.seek(0)
-            buffer.truncate()
+            buffer.close()
             # Move completed file to process folder
             s3client.Object(s3bucketname,s3obj.key.replace('segment-export',s3doneprefix)).copy_from(CopySource=s3bucketname + '/' + s3obj.key)
             s3client.Object(s3bucketname,s3obj.key).delete()
