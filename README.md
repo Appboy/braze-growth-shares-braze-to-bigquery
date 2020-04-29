@@ -31,7 +31,7 @@ The following is an outline of the process:
 To deploy to your [Google Cloud Project](https://cloud.google.com/sdk/gcloud/reference/app/deploy), clone this report locally or via [Google Cloud Shell](https://ssh.cloud.google.com/cloudshell/editor).
 
 ```
-git clone git@github.com:Appboy/brazebigqueryexport.git
+git clone git@github.com:Appboy/braze-growth-shares-braze-to-bq.git
 ```
 
 Create an `app.yaml`, see [app_example.yaml](/app_example.yaml) and deploy to your project using [gcloud cli](https://cloud.google.com/sdk/gcloud).
@@ -71,6 +71,7 @@ env_variables:
 
 * Set `gcsmaxlines` to an appropriate limit.
 * `gcsusetask` for large exports, Google Cloud Tasks is recommended. [See below](#cloud-tasks)
+* **adding `custom_attributes` to `fields_to_export` will export _ALL_ `custom_attributes`. Please be aware of the potential file sized and records that may be exported. [Reference](https://www.braze.com/docs/api/endpoints/export/user_data/post_users_segment/#request-body)**
 
 #### app.yaml example
 Example:
