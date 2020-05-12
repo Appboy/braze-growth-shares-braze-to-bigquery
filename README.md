@@ -31,7 +31,7 @@ The following is an outline of the process:
 To deploy to your [Google Cloud Project](https://cloud.google.com/sdk/gcloud/reference/app/deploy), clone this report locally or via [Google Cloud Shell](https://ssh.cloud.google.com/cloudshell/editor).
 
 ```
-git clone git@github.com:Appboy/braze-growth-shares-braze-to-bq.git
+git clone git@github.com:Appboy/braze-growth-shares-braze-to-bigquery.git
 ```
 
 Create an `app.yaml`, see [app_example.yaml](/app_example.yaml) and deploy to your project using [gcloud cli](https://cloud.google.com/sdk/gcloud).
