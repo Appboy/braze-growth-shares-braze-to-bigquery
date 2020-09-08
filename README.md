@@ -28,7 +28,7 @@ The following is an outline of the process:
 ![BrazeBigQueryProcess](/img/BrazeBigQuery.png)
 
 ## Deploy to Google Cloud App Engine
-To deploy to your [Google Cloud Project](https://cloud.google.com/sdk/gcloud/reference/app/deploy), clone this report locally or via [Google Cloud Shell](https://ssh.cloud.google.com/cloudshell/editor).
+To deploy to your [Google Cloud Project](https://cloud.google.com/sdk/gcloud/reference/app/deploy), clone this repo locally or via [Google Cloud Shell](https://ssh.cloud.google.com/cloudshell/editor).
 
 ```
 git clone git@github.com:Appboy/braze-growth-shares-braze-to-bigquery.git
